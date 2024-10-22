@@ -5,6 +5,8 @@ bool Automate::is_operator(char c) {
   return c == '.' or c == '*' or c == '+';
 }
 
+Automate::Automate(int k) : k(k), lengths(std::vector<int>(k, cmax)) {}
+
 Automate Automate::Concatenate(const Automate& a1, const Automate& a2) {
   Automate res(a1.k);
   //res.lengths = std::vector<int>(k, cmax);

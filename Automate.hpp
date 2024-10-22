@@ -16,7 +16,7 @@ class Automate {
   Automate Concatenate(const Automate& a1, const Automate& a2);
   Automate UnionLang(const Automate& a1, const Automate& a2);
   Automate KleeneStar(const Automate& a1);
-  Automate(int k) : k(k), lengths(std::vector<int>(k, cmax)) {};
+  Automate(int k);
   Automate(const std::string& regexp, int k);
 };
 
