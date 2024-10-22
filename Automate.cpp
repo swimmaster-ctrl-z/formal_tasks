@@ -10,11 +10,10 @@ Automate Automate::Concatenate(const Automate& a1, const Automate& a2) {
   //res.lengths = std::vector<int>(k, cmax);
   for (auto w1 : a1.lengths) {
     for (auto  w2: a2.lengths) {
-      int index = (w1 + w2) % k;
+      int index = (w1 + w2) % a1.k;
       res.lengths[index] = std::min(w1 + w2, res.lengths[index]);
     }
   }
-  //for (auto i: res.lengths) std::cout << i << "\n";
   return res;
 }
 
@@ -67,19 +66,36 @@ Automate::Automate(const std::string &regexp, int k) {
       a.lengths[1] = 1;
       st.push(a);
     } else if (c == '.') {
+      if (st.size() < 2) {
+        throw std::runtime_error("Invalid reverse Polish notation:"
+                                 " not enough operands for concatenation.");
+      }
       Automate a2 = st.top(); st.pop();
       Automate a1 = st.top(); st.pop();
       st.push(Concatenate(a1, a2));
     } else if (c == '+') {
+      if (st.size() < 2) {
+        throw std::runtime_error("Invalid reverse Polish notation:"
+                                 " not enough operands for union.");
+      }
       Automate a2 = st.top(); st.pop();
       Automate a1 = st.top(); st.pop();
       st.push(UnionLang(a1, a2));
     } else if (c == '*') {
+      if (st.empty()) {
+        throw std::runtime_error("Invalid reverse Polish notation:"
+                                 " not enough operands for Kleene star.");
+      }
       Automate a = st.top(); st.pop();
       st.push(KleeneStar(a));
     }
   }
+  if (st.size() != 1) throw std::runtime_error("Invalid reverse Polish notation:"
+                                               " too many operands.");
   lengths = st.top().lengths;
 }
 
+int find_min_length(const Automate &a, int l) {
+  return a.lengths[l] == cmax ? -1 : a.lengths[l];
+}
 

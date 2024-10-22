@@ -20,7 +20,6 @@ class Automate {
   Automate(const std::string& regexp, int k);
 };
 
-
-
+int find_min_length(const Automate &a, int l);
 
 #endif

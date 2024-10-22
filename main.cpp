@@ -2,10 +2,6 @@
 
 #include <iostream>
 
-int find_min_length(const Automate &a, int l) {
-  return a.lengths[l] == cmax ? -1 : a.lengths[l];
-}
-
 int main() {
   try {
     std::string regex;
